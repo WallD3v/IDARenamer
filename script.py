@@ -178,19 +178,17 @@ def main():
     parsed = parse_dump_file(content)
 
     for dll, types in parsed.items():
-        if dll == "Assembly-CSharp":
-            for t in types:
-                for m in t.members:
-                    if m.kind == "method":
-                        met_name = ""
-
-                        namespace = t.namespace
-                        if namespace:
-                            met_name = namespace + "."
-                        met_name += t.name+"$$"+m.name
-                        print(met_name)
-                        addr = int(m.offset, 16)
-                        rename_function(addr, met_name)
+        for t in types:
+            for m in t.members:
+                if m.kind == "method":
+                    met_name = ""
+                    namespace = t.namespace
+                    if namespace:
+                        met_name = namespace + "."
+                    met_name += t.name+"$$"+m.name
+                    print(met_name)
+                    addr = int(m.offset, 16)
+                    rename_function(addr, met_name)
 
 if __name__ == "__main__":
     main()
